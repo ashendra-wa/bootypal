@@ -2,7 +2,7 @@
 import { Menu, Button, Modal } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 // import logo from "../../assets/images/logo.png";
-import logo from "../../assets/images/applogo.png";
+import logo from "../../assets/images/app-logo-qtnr1.png";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function Sidenav({ color }) {
