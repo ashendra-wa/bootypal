@@ -67,31 +67,63 @@ function App() {
 
           <Route exact path="/university" component={UniversityList} />
           <Route exact path="/university/add" component={UniversityAdd} />
-          <Route exact path="/university-update/:universityId" component={UniversityAdd} />
+          <Route
+            exact
+            path="/university-update/:universityId"
+            component={UniversityAdd}
+          />
 
           <Route exact path="/faq" component={FaqList} />
           <Route exact path="/faq/add" component={FaqAdd} />
           <Route exact path="/faq/update/:faqId" component={FaqAdd} />
 
           <Route exact path="/report-element" component={ReportElementList} />
-          <Route exact path="/report-element/add" component={ReportElementForm} />
-          <Route exact path="/report-element/update/:reportElementId" component={ReportElementForm} />
+          <Route
+            exact
+            path="/report-element/add"
+            component={ReportElementForm}
+          />
+          <Route
+            exact
+            path="/report-element/update/:reportElementId"
+            component={ReportElementForm}
+          />
 
           <Route exact path="/languages" component={LanguagesList} />
           <Route exact path="/languages/add" component={LanguagesForm} />
-          <Route exact path="/languages/update/:languageId" component={LanguagesForm} />
+          <Route
+            exact
+            path="/languages/update/:languageId"
+            component={LanguagesForm}
+          />
 
           <Route exact path="/hobbies" component={HobbiesList} />
           <Route exact path="/hobbies/add" component={HobbiesForm} />
-          <Route exact path="/hobbies/update/:hobbiesId" component={HobbiesForm} />
+          <Route
+            exact
+            path="/hobbies/update/:hobbiesId"
+            component={HobbiesForm}
+          />
 
           <Route exact path="/food-preference" component={FoodPreferenceList} />
-          <Route exact path="/food-preference/add" component={FoodPreferenceForm} />
-          <Route exact path="/food-preference/update/:foodPreferenceId" component={FoodPreferenceForm} />
+          <Route
+            exact
+            path="/food-preference/add"
+            component={FoodPreferenceForm}
+          />
+          <Route
+            exact
+            path="/food-preference/update/:foodPreferenceId"
+            component={FoodPreferenceForm}
+          />
 
           <Route exact path="/setting" component={SettingList} />
           <Route exact path="/setting/add" component={SettingForm} />
-          <Route exact path="/setting/update/:settingId" component={SettingForm} />
+          <Route
+            exact
+            path="/setting/update/:settingId"
+            component={SettingForm}
+          />
 
           <Route exact path="/offer" component={OfferList} />
           <Route exact path="/offer/add" component={OfferForm} />
@@ -110,8 +142,16 @@ function App() {
           <Route exact path="/chat-block" component={ChatBlockList} />
 
           <Route exact path="/event-category" component={EventCategoryList} />
-          <Route exact path="/event-category/add" component={EventCategoryForm} />
-          <Route exact path="/event-category/update/:planId" component={EventCategoryForm} />
+          <Route
+            exact
+            path="/event-category/add"
+            component={EventCategoryForm}
+          />
+          <Route
+            exact
+            path="/event-category/update/:planId"
+            component={EventCategoryForm}
+          />
 
           <Route exact path="/event" component={EventList} />
           <Route exact path="/event/add" component={EventForm} />
@@ -126,7 +166,11 @@ function App() {
 
           <Route exact path="/blog-category" component={BlogCategoryList} />
           <Route exact path="/blog-category/add" component={BlogCategoryForm} />
-          <Route exact path="/blog-category/update/:blogId" component={BlogCategoryForm} />
+          <Route
+            exact
+            path="/blog-category/update/:blogId"
+            component={BlogCategoryForm}
+          />
 
           <Route exact path="/blogs" component={BlogList} />
           <Route exact path="/blog/add" component={BlogForm} />

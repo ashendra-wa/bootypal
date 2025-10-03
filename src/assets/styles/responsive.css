@@ -89,7 +89,8 @@
 .custom-btn {
   display: inline-block;
   padding: 8px 20px;
-  background: linear-gradient(to bottom, #C78BE1, #F7A8B8);
+  background: linear-gradient(to bottom, #7150d0, #ae92ff) !important;
+  /* linear-gradient(to bottom, #C78BE1, #F7A8B8); */
   color: #ffffff;
   text-decoration: none;
   border-radius: 5px;
@@ -105,7 +106,8 @@
 .update-btn {
   display: inline-block;
   padding: 2px 8px;
-  background: linear-gradient(to bottom, #C78BE1, #F7A8B8);
+  background: linear-gradient(to bottom, #7150d0, #ae92ff) !important;
+  /* linear-gradient(to bottom, #C78BE1, #F7A8B8); */
   color: #ffffff;
   text-decoration: none;
   border-radius: 5px;
@@ -143,7 +145,7 @@
   border: 0;
   border-radius: 6px;
 }
-.ant-input-affix-wrapper>input.ant-input {
+.ant-input-affix-wrapper > input.ant-input {
   padding: 4px 11px;
   border: 1px solid #d9d9d9;
   outline: none;
@@ -154,16 +156,20 @@
   top: 14px;
 }
 .ant-btn-primary {
-  background: linear-gradient(to bottom, #C78BE1, #F7A8B8);
+  background: linear-gradient(to bottom, #7150d0, #ae92ff) !important;
+  /* linear-gradient(to bottom, #C78BE1, #F7A8B8); */
 }
 .ant-btn-primary:hover {
-  background: linear-gradient(to bottom, #C78BE1, #F7A8B8);
+  background: linear-gradient(to bottom, #7150d0, #ae92ff) !important;
+  /* linear-gradient(to bottom, #C78BE1, #F7A8B8); */
 }
 .ant-modal-confirm .ant-modal-confirm-btns .ant-btn + .ant-btn {
-  background: linear-gradient(to bottom, #C78BE1, #F7A8B8);
+  background: linear-gradient(to bottom, #7150d0, #ae92ff) !important;
+  /* linear-gradient(to bottom, #C78BE1, #F7A8B8); */
 }
 .ant-switch-checked {
-  background: linear-gradient(to bottom, #C78BE1, #F7A8B8);
+  background: linear-gradient(to bottom, #7150d0, #ae92ff) !important;
+  /* linear-gradient(to bottom, #C78BE1, #F7A8B8); */
 }
 
 .ant-btn-icon-only > .anticon {
@@ -172,8 +178,8 @@
   margin-left: -8px;
 }
 
-.ant-input-affix-wrapper span.ant-input-suffix { 
-display: none !important;
+.ant-input-affix-wrapper span.ant-input-suffix {
+  display: none !important;
 }
 
 /* .ant-btn:hover, .ant-btn:focus {
