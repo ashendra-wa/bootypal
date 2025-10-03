@@ -1,7 +1,8 @@
 // import { useState } from "react";
 import { Menu, Button, Modal } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
+// import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/applogo.png";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function Sidenav({ color }) {
@@ -420,10 +421,14 @@ function Sidenav({ color }) {
   return (
     <>
       <div className="">
-        <img style={{
-          "height": "60px",
-          "margin-left": "74px"
-        }} src={logo} alt="" />
+        <img
+          style={{
+            height: "60px",
+            "margin-left": "74px",
+          }}
+          src={logo}
+          alt=""
+        />
       </div>
       <hr />
       <Menu theme="light" mode="inline">
@@ -482,7 +487,9 @@ function Sidenav({ color }) {
         <Menu.Item key="2">
           <NavLink to="/plan">
             <span
-              className={`icon ${page === "plan" || page === "plan/add" ? 'activate' : ''}`}
+              className={`icon ${
+                page === "plan" || page === "plan/add" ? "activate" : ""
+              }`}
               style={{
                 background: page === "plan" || page === "plan/add" ? color : "",
               }}

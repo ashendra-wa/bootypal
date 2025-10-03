@@ -12,7 +12,9 @@ function Main({ children }) {
   const history = useHistory();
   const [visible, setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
-  const [sidenavColor, setSidenavColor] = useState("linear-gradient(to bottom, #C78BE1, #F7A8B8)");
+  const [sidenavColor, setSidenavColor] = useState(
+    "linear-gradient(to bottom, #C78BE1, #F7A8B8)"
+  );
   const [sidenavType, setSidenavType] = useState("transparent");
   const [fixed, setFixed] = useState(false);
 
@@ -25,9 +27,9 @@ function Main({ children }) {
   pathname = pathname.replace("/", "");
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     if (!token) {
-      history.push('/sign-in');
+      history.push("/sign-in");
     }
     if (pathname === "rtl") {
       setPlacement("left");
@@ -38,8 +40,9 @@ function Main({ children }) {
 
   return (
     <Layout
-      className={`layout-dashboard ${pathname === "profile" ? "layout-profile" : ""
-        } ${pathname === "rtl" ? "layout-dashboard-rtl" : ""}`}
+      className={`layout-dashboard ${
+        pathname === "profile" ? "layout-profile" : ""
+      } ${pathname === "rtl" ? "layout-dashboard-rtl" : ""}`}
     >
       <Drawer
         title={false}
@@ -49,19 +52,22 @@ function Main({ children }) {
         visible={visible}
         key={placement === "right" ? "left" : "right"}
         width={250}
-        className={`drawer-sidebar ${pathname === "rtl" ? "drawer-sidebar-rtl" : ""
-          } `}
+        className={`drawer-sidebar ${
+          pathname === "rtl" ? "drawer-sidebar-rtl" : ""
+        } `}
       >
         <Layout
-          className={`layout-dashboard ${pathname === "rtl" ? "layout-dashboard-rtl" : ""
-            }`}
+          className={`layout-dashboard ${
+            pathname === "rtl" ? "layout-dashboard-rtl" : ""
+          }`}
         >
           <Sider
             trigger={null}
             width={250}
             theme="light"
-            className={`sider-primary ant-layout-sider-primary ${sidenavType === "#fff" ? "active-route" : ""
-              }`}
+            className={`sider-primary ant-layout-sider-primary ${
+              sidenavType === "#fff" ? "active-route" : ""
+            }`}
             style={{ background: sidenavType }}
           >
             <Sidenav color={sidenavColor} />
@@ -77,8 +83,9 @@ function Main({ children }) {
         trigger={null}
         width={250}
         theme="light"
-        className={`sider-primary ant-layout-sider-primary ${sidenavType === "#fff" ? "active-route" : ""
-          }`}
+        className={`sider-primary ant-layout-sider-primary ${
+          sidenavType === "#fff" ? "active-route" : ""
+        }`}
         style={{ background: sidenavType }}
       >
         <Sidenav color={sidenavColor} />
