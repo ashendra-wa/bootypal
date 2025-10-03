@@ -169,7 +169,8 @@ body {
   .ant-menu-item
   .active
   .icon {
-  background: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  background: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
 }
 .layout-dashboard
   .ant-layout-sider.sider-primary
@@ -187,7 +188,8 @@ body {
   .ant-menu-submenu
   .active
   .icon {
-  background: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  background: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
 }
 
 .layout-dashboard .ant-layout-sider.sider-primary .ant-menu-item .icon,
@@ -269,7 +271,8 @@ body {
 .layout-dashboard
   .ant-layout-sider.sider-primary.ant-layout-sider-primary
   .footer-box {
-  background: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  background: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
   color: #fff;
   box-shadow: none;
 }
@@ -297,7 +300,8 @@ body {
   justify-content: center;
   align-items: center;
   margin-bottom: 15px;
-  background: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  background: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
 }
 
 .layout-dashboard
@@ -719,7 +723,8 @@ ul.ant-menu.ant-menu-root.ant-menu-inline.ant-menu-light.left-nav
 ul.ant-menu.ant-menu-root.ant-menu-inline.ant-menu-light.left-nav
   li.ant-menu-item-selected
   span.anticon {
-  background: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  background: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
   color: #fff;
 }
 
@@ -763,7 +768,8 @@ ul.ant-menu.ant-menu-root.ant-menu-inline.ant-menu-light.left-nav
   box-shadow: 0px 4px 6px #0000001f;
   border-radius: 6px;
   font-size: 19px;
-  background: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  background: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
   color: #fff;
   direction: ltr;
   margin-bottom: 15px;
@@ -964,7 +970,8 @@ button.ant-btn.bell strong {
   width: 48px;
   height: 48px;
   text-align: center;
-  background: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  background: linear-gradient(to bottom, #1a0033, #000000);
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
   color: #fff;
   border-radius: 0.5rem;
   margin-left: auto;
@@ -1032,7 +1039,8 @@ button.ant-btn.bell strong {
 }
 
 .sales ul li:last-child span.anticon {
-  color: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  color: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
 }
 .sales ul li {
   color: #8c8c8c;
@@ -1050,7 +1058,8 @@ button.ant-btn.bell strong {
 
 span.blue {
   margin-left: 5px;
-  color: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  color: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
   font-weight: 600;
 }
 .project-ant h5 {
@@ -1061,7 +1070,8 @@ span.blue {
 
 span.blue {
   margin-left: 5px;
-  color: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  color: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
   font-weight: 600;
 }
 .project-ant {
@@ -1089,12 +1099,16 @@ span.blue {
 }
 
 .antd-pro-pages-dashboard-analysis-style-salesExtra a:hover {
-  color: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
-  border: 1px solid linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  color: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
+  border: 1px solid linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* 1px solid linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
 }
 .antd-pro-pages-dashboard-analysis-style-salesExtra a.active {
-  color: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
-  border: 1px solid linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  color: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
+  border: 1px solid linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* 1px solid linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
 }
 
 .ant-list-box th {
@@ -1243,7 +1257,8 @@ img {
   margin-left: 2px;
 }
 .icon-move-right {
-  color: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  color: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
 
   display: block;
 }
@@ -2010,7 +2025,8 @@ body {
   vertical-align: middle;
 }
 .layout-default .ant-layout-footer .menu-nav-social a:hover svg {
-  fill: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  fill: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
 }
 .layout-default .ant-layout-footer .copyright a {
   color: inherit;
@@ -2332,7 +2348,8 @@ section.ant-layout.layout-content .ant-layout-content.content-ant {
   width: 64px;
   height: 64px;
   margin: auto;
-  background: linear-gradient(to bottom, #c78be1, #f7a8b8) !important;
+  background: linear-gradient(to bottom, #1a0033, #000000) !important;
+  /* linear-gradient(to bottom, #c78be1, #f7a8b8) !important; */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgb(0 0 0 / 12%);
   display: flex;
@@ -3071,7 +3088,8 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 }
 .ant-input:focus,
 .ant-input-focused {
-  border-color: #c78be1 !important;
+  border-color: #1a0033 !important;
+  /* #c78be1 !important; */
   border-right-width: 1px !important;
   outline: 0;
   box-shadow: 0 0 0 2px #6b00c92b !important;
@@ -3079,29 +3097,34 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
 .ant-select:not(.ant-select-disabled):focus .ant-select-selector,
 .ant-select-open .ant-select-selector {
-  border-color: #c78be1 !important;
+  border-color: #1a0033 !important;
+  /* #c78be1 !important; */
   border-right-width: 1px !important;
   box-shadow: 0 0 0 2px #6b00c92b !important;
 }
 .ant-input-affix-wrapper:focus,
 .ant-input-affix-wrapper-focused {
-  border-color: #c78be1;
+  border-color: #1a0033;
+  /* #c78be1; */
   border-right-width: 0px !important;
   outline: 0;
   box-shadow: none;
 }
 .ant-pagination-item-active a {
-  color: #c78be1;
+  color: #1a0033;
+  /* #c78be1; */
 }
 .ant-pagination-item-active {
-  border-color: #c78be1;
+  border-color: #1a0033;
+  /* #c78be1; */
 }
 .ant-pagination-item-active:hover {
   color: #6b00c9;
 }
 .ant-pagination-item-active:focus-visible,
 .ant-pagination-item-active:hover {
-  border-color: #c78be1;
+  border-color: #1a0033;
+  /* /#c78be1; */
 }
 .ant-pagination-item-active:focus-visible a,
 .ant-pagination-item-active:hover a {
@@ -3110,7 +3133,8 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 .ant-btn:hover,
 .ant-btn:focus {
   /* color: #6b00c9; */
-  border-color: #c78be1;
+  border-color: #1a0033;
+  /* #c78be1; */
   /* background: #6b00c9; */
 }
 .ant-modal-confirm .ant-modal-confirm-btns .ant-btn + .ant-btn:hover {
