@@ -51,7 +51,9 @@ import ChatBlockList from "./pages/chatBlock/List";
 import DeleteAccount from "./pages/DeleteAccount";
 import EventCategoryList from "./pages/eventCategory/List";
 import EventCategoryForm from "./pages/eventCategory/Form";
-
+import LookingFor from "./pages/lookingfor/List";
+import LanguageSpeak from "./pages/languageSpeak/List";
+import ReligiousBeliefs from "./pages/religiousBeliefs/List";
 function App() {
   return (
     <div className="App">
@@ -175,6 +177,9 @@ function App() {
           <Route exact path="/blogs" component={BlogList} />
           <Route exact path="/blog/add" component={BlogForm} />
           <Route exact path="/blog/update/:blogId" component={BlogForm} />
+          <Route exact path="/looking-for" component={LookingFor} />
+          <Route exact path="/religious-beliefs" component={ReligiousBeliefs} />
+          <Route exact path="/language-speak" component={LanguageSpeak} />
 
           {/* <Redirect from="*" to="/dashboard" /> */}
         </Main>

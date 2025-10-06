@@ -404,6 +404,69 @@ function Sidenav({ color }) {
     </svg>,
   ];
 
+  const IconLookingFor = [
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="11" cy="11" r="7"></circle>
+      <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
+    </svg>,
+  ];
+
+  const IconReligious = [
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {/* crescent shape */}
+      <path d="M14.5 3.5A7.5 7.5 0 1 0 19 13a6.5 6.5 0 0 1-4.5-9.5z" />
+      {/* small cross overlay */}
+      <g transform="translate(4.5,2.5) scale(0.9)">
+        <line x1="11" y1="7" x2="11" y2="15"></line>
+        <line x1="7" y1="11" x2="15" y2="11"></line>
+      </g>
+    </svg>,
+  ];
+
+  const IconLanguage = [
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {/* speech bubble */}
+        <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" />
+        {/* sound waves */}
+        <path d="M11 9c.5-1 2-2 3-2s2.5 1 3 2" />
+        <path d="M11 13c.5-1 2-2 3-2s2.5 1 3 2" opacity="0.9" />
+      </g>
+    </svg>,
+  ];
+
   const handleLogout = () => {
     Modal.confirm({
       title: "Are you sure you want to logout?",
@@ -694,6 +757,45 @@ function Sidenav({ color }) {
             <span className="label">Settings</span>
           </NavLink>
         </Menu.Item>
+        <Menu.Item key="6">
+          <NavLink to="/looking-for">
+            <span
+              className="icon"
+              style={{
+                background: page === "looking-for" ? color : "",
+              }}
+            >
+              {IconLookingFor}
+            </span>
+            <span className="label">Looking for</span>
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key="7">
+          <NavLink to="/religious-beliefs">
+            <span
+              className="icon"
+              style={{
+                background: page === "religious-beliefs" ? color : "",
+              }}
+            >
+              {IconReligious}
+            </span>
+            <span className="label">Religious Beliefs</span>
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key="8">
+          <NavLink to="/language-speak">
+            <span
+              className="icon"
+              style={{
+                background: page === "language-speak" ? color : "",
+              }}
+            >
+              {IconLanguage}
+            </span>
+            <span className="label">Language Speak</span>
+          </NavLink>
+        </Menu.Item>
         {/* <Menu.Item key="2">
           <NavLink to="/send-mail">
             <span
@@ -707,7 +809,7 @@ function Sidenav({ color }) {
             <span className="label">Send Mail</span>
           </NavLink>
         </Menu.Item> */}
-        <Menu.Item key="7">
+        <Menu.Item key="9">
           <Button
             style={{ border: "none" }}
             className="btn_logout"
