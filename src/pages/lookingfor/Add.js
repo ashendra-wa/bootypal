@@ -51,7 +51,6 @@ function LookingFor() {
           name: data.name,
           enabled: data.enabled,
         });
-        console.log("===>", data);
         setPreviewImage(`${backendUrl}/${data.icon}`);
         setImageFile(`${backendUrl}/${data.icon}`);
       } else {
@@ -79,7 +78,6 @@ function LookingFor() {
     try {
       let response;
       if (isUpdateMode) {
-        console.log("xfdgdfgdfgdfg is ytheee");
         response = await axios.patch(
           `${backendUrl}/api/lookingfor/update/${LookingForId}`,
           formData,

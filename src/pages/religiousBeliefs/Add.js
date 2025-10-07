@@ -75,10 +75,10 @@ function ReligiousBeliefs() {
         if (response.status === 200) {
           notification.success({
             message: "Success",
-            description: "Faq updated successfully!",
+            description: "Religious beliefs updated successfully!",
             placement: "topRight",
           });
-          history.push("/faq");
+          history.push("/religious-beliefs");
         } else {
           notification.info({
             message: "Info",
@@ -99,11 +99,11 @@ function ReligiousBeliefs() {
         if (response.status === 200) {
           notification.success({
             message: "Success",
-            description: "Faq added successfully!",
+            description: "Religiou beliefs added successfully!",
             placement: "topRight",
           });
           form.resetFields();
-          history.push("/faq");
+          history.push("/religious-beliefs");
         } else {
           notification.info({
             message: "Info",

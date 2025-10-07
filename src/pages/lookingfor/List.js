@@ -1,31 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Row,
-  Col,
-  Card,
-  Radio,
-  Table,
-  Button,
-  Avatar,
-  Typography,
-  notification,
-  Modal,
-} from "antd";
+import { Row, Col, Card, Table, Typography, notification, Modal } from "antd";
 import axios from "axios";
-import Icon, {
+import {
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
-  EyeOutlined,
 } from "@ant-design/icons";
-import { baseUrl, backendUrl } from "../../config";
+import { backendUrl } from "../../config";
 import Loader from "../../components/Loader";
 
 const { Title } = Typography;
 const { confirm } = Modal;
 
-// table code start
 const columns = [
   {
     title: "Name",
@@ -51,19 +38,18 @@ const columns = [
 ];
 
 function LookingForList() {
-  const [LookingForList, setLookingForList] = useState([]);
-  const [privacy, setPrivacy] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
+  const [lookingForList, setLookingForList] = useState([]);
+  const [privacy, setPrivacy] = useState(""); // currently unused
+  const [modalVisible, setModalVisible] = useState(false); // currently unused
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getUserList();
-  }, [backendUrl]);
+  }, []); // ✅ only run once on mount
 
   async function getUserList() {
     try {
       setLoading(true);
-      // Make API call to submit form data
       const response = await axios.get(
         `${backendUrl}/api/lookingfor/listAll?enabled=true`,
         {
@@ -72,16 +58,21 @@ function LookingForList() {
           },
         }
       );
+
+      // ✅ Always set the list, even if it's empty or success=false
       if (response.status === 200) {
-        setLookingForList(response.data.result);
+        const result = response.data.result || [];
+        setLookingForList(result);
+      } else {
+        setLookingForList([]); // clear table if not 200
       }
-      // Handle success response from the API
     } catch (error) {
       console.error("API error:", error);
+      setLookingForList([]); // ✅ ensure UI clears on error too
       notification.info({
         message: "Info",
-        description: error.response?.data?.message,
-        placement: "topRight", // You can adjust the placement as needed
+        description: error.response?.data?.message || "Failed to load data.",
+        placement: "topRight",
       });
     } finally {
       setLoading(false);
@@ -94,7 +85,7 @@ function LookingForList() {
         `${backendUrl}/api/lookingfor/delete/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       );
@@ -102,13 +93,13 @@ function LookingForList() {
         getUserList();
         notification.success({
           message: "Success",
-          description: "Faq deleted successfully!",
+          description: "Looking for deleted successfully!",
           placement: "topRight",
         });
       } else {
         notification.info({
           message: "Info",
-          description: response.data.message,
+          description: response.data.message || "Something went wrong.",
           placement: "topRight",
         });
       }
@@ -116,7 +107,7 @@ function LookingForList() {
       console.error("API error:", error);
       notification.info({
         message: "Info",
-        description: error.response?.data?.message,
+        description: error.response?.data?.message || "Failed to delete item.",
         placement: "topRight",
       });
     }
@@ -136,23 +127,6 @@ function LookingForList() {
     });
   };
 
-  const showModal = (privacy) => {
-    setPrivacy(privacy);
-    setModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setModalVisible(false);
-  };
-  console.log(
-    "======>LookingForListLookingForListLookingForList",
-    LookingForList
-  );
-
   return (
     <>
       <Loader visible={loading} />
@@ -164,18 +138,16 @@ function LookingForList() {
               className="criclebox tablespace mb-24"
               title="Looking For"
               extra={
-                <>
-                  <Link className="custom-btn" to="/looking-for/Add">
-                    Add
-                  </Link>
-                </>
+                <Link className="custom-btn" to="/looking-for/Add">
+                  Add
+                </Link>
               }
             >
               <div className="table-responsive">
                 <Table
                   columns={columns}
-                  dataSource={LookingForList?.map((user, index) => ({
-                    key: index.toString(),
+                  dataSource={lookingForList?.map((user, index) => ({
+                    key: user._id || index.toString(),
                     name: (
                       <div className="author-info">
                         <p>{user?.name ?? ""}</p>
@@ -205,7 +177,6 @@ function LookingForList() {
                         />
                       </span>
                     ),
-
                     action: (
                       <div className="button-container">
                         <Link

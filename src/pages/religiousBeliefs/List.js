@@ -68,15 +68,12 @@ function ReligiousBeliefs() {
         }
       );
       if (response.status === 200) {
-        setReligiousList(response.data.result);
-        console.log("response", response.data.result);
+        const result = response.data.result || [];
+        setReligiousList(result);
       } else {
-        // notification.info({
-        //     message: 'Info',
-        //     description: response.data.message,
-        //     placement: 'topRight' // You can adjust the placement as needed
-        // });
+        setReligiousList([]); // clear table if not 200
       }
+
       // Handle success response from the API
     } catch (error) {
       console.error("API error:", error);
@@ -105,7 +102,7 @@ function ReligiousBeliefs() {
         getUserList();
         notification.success({
           message: "Success",
-          description: "Faq deleted successfully!",
+          description: "Religious Beliefs deleted successfully!",
           placement: "topRight",
         });
       } else {
