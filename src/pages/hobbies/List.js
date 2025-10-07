@@ -162,7 +162,11 @@ function HobbiesList() {
                     icons: (
                       <span type="primary">
                         <img
-                          src={`${baseUrl}/${user.icon}`}
+                          src={
+                            !user?.icon
+                              ? "/defualt.png"
+                              : `${baseUrl}/${user.icon}`
+                          }
                           alt={user.name}
                           style={{
                             width: 50,

@@ -65,11 +65,16 @@ function HobbiesForm() {
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("enabled", values.enabled);
-      if (imageFile) formData.append("icon", imageFile);
+      if (imageFile && imageFile instanceof File) {
+        formData.append("icon", imageFile);
+      }
+
+      let response;
+
       if (isUpdateMode) {
-        const response = await axios.patch(
-          `${baseUrl}/api/hobbies/update-with-icon `,
-          values,
+        response = await axios.patch(
+          `${baseUrl}/api/hobbies/update-with-icon/${hobbiesId}`,
+          formData,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -77,22 +82,8 @@ function HobbiesForm() {
             },
           }
         );
-        if (response.status === 200) {
-          notification.success({
-            message: "Success",
-            description: "Hobbies updated successfully!",
-            placement: "topRight",
-          });
-          history.push("/hobbies");
-        } else {
-          notification.info({
-            message: "Info",
-            description: response.data.message,
-            placement: "topRight",
-          });
-        }
       } else {
-        const response = await axios.post(
+        response = await axios.post(
           `${baseUrl}/api/hobbies/create-with-icon`,
           formData,
           {
@@ -102,27 +93,30 @@ function HobbiesForm() {
             },
           }
         );
-        if (response.status === 200) {
-          notification.success({
-            message: "Success",
-            description: "Hobbies added successfully!",
-            placement: "topRight",
-          });
-          form.resetFields();
-          history.push("/hobbies");
-        } else {
-          notification.info({
-            message: "Info",
-            description: response.data.message,
-            placement: "topRight",
-          });
-        }
+      }
+
+      if (response.status === 200) {
+        notification.success({
+          message: "Success",
+          description: `Hobbies ${
+            isUpdateMode ? "updated" : "added"
+          } successfully!`,
+          placement: "topRight",
+        });
+        form.resetFields();
+        history.push("/hobbies");
+      } else {
+        notification.info({
+          message: "Info",
+          description: response.data.message,
+          placement: "topRight",
+        });
       }
     } catch (error) {
       console.error("API error:", error);
       notification.info({
         message: "Info",
-        description: error.response?.data?.message,
+        description: error.response?.data?.message || "Something went wrong.",
         placement: "topRight",
       });
     }

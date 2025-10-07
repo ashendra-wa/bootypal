@@ -166,7 +166,11 @@ function LookingForList() {
                     icons: (
                       <span type="primary">
                         <img
-                          src={`${backendUrl}/${user.icon}`}
+                          src={
+                            !user.icon
+                              ? "/defualt.png"
+                              : `${backendUrl}/${user.icon}`
+                          }
                           alt={user.name}
                           style={{
                             width: 50,
