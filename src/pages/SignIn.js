@@ -8,38 +8,38 @@ import {
   Typography,
   Form,
   Input,
-  notification
+  notification,
 } from "antd";
 import axios from "axios";
 import { baseUrl } from "../config";
-import logo from "../assets/images/logo.png";
+// import logo from "../assets/images/logo.png";
+import logo from "../assets/images/app-logo-qtnr1.png";
+
 const { Title } = Typography;
 const { Content } = Layout;
 
-
 function SignIn() {
-
   const navigate = useHistory();
 
   const onFinish = async (values) => {
     try {
       // Make API call to submit form data
-      values.isRole = 'admin';
+      values.isRole = "admin";
       const response = await axios.post(`${baseUrl}/api/login`, values);
       if (response.data.success) {
-        localStorage.setItem('accessToken', response.data.result.token);
-        localStorage.setItem('name', response.data.result.name);
-        localStorage.setItem('userLastName', response.data.result.surname);
-        localStorage.setItem('userId', response.data.result._id);
-        localStorage.setItem('email', response.data.result.email);
-        localStorage.setItem('photo', response.data.result.photo);
-        navigate.push('/dashboard');
+        localStorage.setItem("accessToken", response.data.result.token);
+        localStorage.setItem("name", response.data.result.name);
+        localStorage.setItem("userLastName", response.data.result.surname);
+        localStorage.setItem("userId", response.data.result._id);
+        localStorage.setItem("email", response.data.result.email);
+        localStorage.setItem("photo", response.data.result.photo);
+        navigate.push("/dashboard");
       } else {
         notification.destroy();
         notification.info({
-          message: 'Info',
+          message: "Info",
           description: response.data.message,
-          placement: 'topRight' // You can adjust the placement as needed
+          placement: "topRight", // You can adjust the placement as needed
         });
       }
       // Handle success response from the API
@@ -58,11 +58,11 @@ function SignIn() {
         <Content className="signin" style={{ "margin-top": "100px" }}>
           <Row gutter={[24, 0]} justify="space-around">
             <Col>
-              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+              <div style={{ textAlign: "center", marginBottom: "20px" }}>
                 <img
                   src={logo} // <-- Replace with your logo path
                   alt="Logo"
-                  style={{ width: '100px', height: '100px' }}
+                  style={{ width: "100px", height: "100px" }}
                 />
               </div>
               {/* <Title className="mb-15">Log In</Title> */}
@@ -123,7 +123,6 @@ function SignIn() {
       </Layout>
     </>
   );
-
 }
 
 export default SignIn;

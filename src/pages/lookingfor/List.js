@@ -1,16 +1,28 @@
-import { useEffect, useState } from "react";
-import { Row, Col, Card, Table, notification, Modal } from "antd";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { baseUrl } from "../../config";
 import {
+  Row,
+  Col,
+  Card,
+  Radio,
+  Table,
+  Button,
+  Avatar,
+  Typography,
+  notification,
+  Modal,
+} from "antd";
+import axios from "axios";
+import Icon, {
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
+import { baseUrl, backendUrl } from "../../config";
 import Loader from "../../components/Loader";
 
+const { Title } = Typography;
 const { confirm } = Modal;
 
 // table code start
@@ -19,16 +31,17 @@ const columns = [
     title: "Name",
     dataIndex: "name",
     key: "name",
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
+    width: "32%",
   },
   {
     title: "Status",
     key: "status",
     dataIndex: "status",
+  },
+  {
+    title: "Icons",
+    key: "icons",
+    dataIndex: "icons",
   },
   {
     title: "Action",
@@ -37,75 +50,59 @@ const columns = [
   },
 ];
 
-function PlanList() {
-  const [userList, setUserList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [modalVisible, setModalVisible] = useState(false);
+function LookingForList() {
+  const [LookingForList, setLookingForList] = useState([]);
   const [privacy, setPrivacy] = useState("");
-  const [totalUsers, setTotalUsers] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getUserList();
-  }, [currentPage, pageSize]); // Update data when page or page size changes
+  }, [backendUrl]);
 
   async function getUserList() {
     try {
       setLoading(true);
-      const response = await axios.get(`${baseUrl}/api/plan/list`, {
-        params: {
-          page: currentPage,
-          limit: pageSize,
-        },
-      });
-      if (response.data.success) {
-        setUserList(response.data.result);
-        setTotalUsers(response.data.pagination.count);
-      } else {
-        // notification.info({
-        //     message: 'Info',
-        //     description: response.data.message,
-        //     placement: 'topRight',
-        // });
+      // Make API call to submit form data
+      const response = await axios.get(
+        `${backendUrl}/api/lookingfor/listAll?enabled=true`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setLookingForList(response.data.result);
       }
+      // Handle success response from the API
     } catch (error) {
       console.error("API error:", error);
       notification.info({
         message: "Info",
         description: error.response?.data?.message,
-        placement: "topRight",
+        placement: "topRight", // You can adjust the placement as needed
       });
     } finally {
       setLoading(false);
     }
   }
 
-  const handlePageChange = (page, pageSize) => {
-    setCurrentPage(page);
-    setPageSize(pageSize);
-  };
-
-  const handleOk = () => {
-    setModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setModalVisible(false);
-  };
-
   async function handleDelete(id) {
     try {
-      const response = await axios.delete(`${baseUrl}/api/plan/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
-        },
-      });
-      if (response.data.success) {
+      const response = await axios.delete(
+        `${backendUrl}/api/lookingfor/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
+          },
+        }
+      );
+      if (response.status === 200) {
         getUserList();
         notification.success({
           message: "Success",
-          description: "Plan deleted successfully!",
+          description: "Faq deleted successfully!",
           placement: "topRight",
         });
       } else {
@@ -139,6 +136,23 @@ function PlanList() {
     });
   };
 
+  const showModal = (privacy) => {
+    setPrivacy(privacy);
+    setModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+  console.log(
+    "======>LookingForListLookingForListLookingForList",
+    LookingForList
+  );
+
   return (
     <>
       <Loader visible={loading} />
@@ -148,30 +162,28 @@ function PlanList() {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Plan"
+              title="Looking For"
               extra={
                 <>
-                  {/* <Link className="custom-btn" to="/plan/add">Add</Link> */}
+                  <Link className="custom-btn" to="/looking-for/Add">
+                    Add
+                  </Link>
                 </>
               }
             >
               <div className="table-responsive">
                 <Table
                   columns={columns}
-                  dataSource={userList.map((user, index) => ({
+                  dataSource={LookingForList?.map((user, index) => ({
                     key: index.toString(),
                     name: (
                       <div className="author-info">
-                        <p>{user.name}</p>
-                      </div>
-                    ),
-                    description: (
-                      <div className="author-info">
-                        <p>{user.description}</p>
+                        <p>{user?.name ?? ""}</p>
                       </div>
                     ),
                     status: (
                       <span
+                        type="primary"
                         className={
                           user.enabled ? "text-success" : "text-danger"
                         }
@@ -179,27 +191,39 @@ function PlanList() {
                         {user.enabled ? "Active" : "Inactive"}
                       </span>
                     ),
+                    icons: (
+                      <span type="primary">
+                        <img
+                          src={`${backendUrl}/${user.icon}`}
+                          alt={user.name}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 8,
+                            objectFit: "cover",
+                          }}
+                        />
+                      </span>
+                    ),
+
                     action: (
                       <div className="button-container">
                         <Link
-                          to={`/plan/update/${user._id}`}
+                          to={`/looking-for/update/${user._id}`}
                           className="update-btn"
                         >
                           <EditOutlined />
                         </Link>
-                        {/* <button onClick={() => showDeleteConfirm(user._id)} className="delete-btn">
-                                                    <DeleteOutlined />
-                                                </button> */}
+                        <button
+                          onClick={() => showDeleteConfirm(user._id)}
+                          className="delete-btn"
+                        >
+                          <DeleteOutlined />
+                        </button>
                       </div>
                     ),
                   }))}
-                  pagination={{
-                    // Step 3: Add pagination settings
-                    current: currentPage,
-                    pageSize: pageSize,
-                    total: totalUsers,
-                    onChange: handlePageChange,
-                  }}
+                  pagination={false}
                   className="ant-border-space"
                 />
               </div>
@@ -207,18 +231,8 @@ function PlanList() {
           </Col>
         </Row>
       </div>
-      <Modal
-        title={`Description Policy`}
-        visible={modalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <div className="author-info">
-          <div dangerouslySetInnerHTML={{ __html: privacy }} />
-        </div>
-      </Modal>
     </>
   );
 }
 
-export default PlanList;
+export default LookingForList;

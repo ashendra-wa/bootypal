@@ -1,16 +1,28 @@
-import { useEffect, useState } from "react";
-import { Row, Col, Card, Table, notification, Modal } from "antd";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { baseUrl } from "../../config";
+import {
+  Row,
+  Col,
+  Card,
+  Radio,
+  Table,
+  Button,
+  Avatar,
+  Typography,
+  notification,
+  Modal,
+} from "antd";
+import axios from "axios";
 import {
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
+import { baseUrl, backendUrl } from "../../config";
 import Loader from "../../components/Loader";
 
+const { Title } = Typography;
 const { confirm } = Modal;
 
 // table code start
@@ -19,11 +31,7 @@ const columns = [
     title: "Name",
     dataIndex: "name",
     key: "name",
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
+    width: "32%",
   },
   {
     title: "Status",
@@ -37,75 +45,67 @@ const columns = [
   },
 ];
 
-function PlanList() {
-  const [userList, setUserList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [modalVisible, setModalVisible] = useState(false);
+function ReligiousBeliefs() {
+  const [religiousList, setReligiousList] = useState([]);
   const [privacy, setPrivacy] = useState("");
-  const [totalUsers, setTotalUsers] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getUserList();
-  }, [currentPage, pageSize]); // Update data when page or page size changes
+  }, []);
 
   async function getUserList() {
     try {
       setLoading(true);
-      const response = await axios.get(`${baseUrl}/api/plan/list`, {
-        params: {
-          page: currentPage,
-          limit: pageSize,
-        },
-      });
-      if (response.data.success) {
-        setUserList(response.data.result);
-        setTotalUsers(response.data.pagination.count);
+      // Make API call to submit form data
+      const response = await axios.get(
+        `${backendUrl}/api/religiousbelief/listAll`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
+          },
+        }
+      );
+      if (response.status === 200) {
+        setReligiousList(response.data.result);
+        console.log("response", response.data.result);
       } else {
         // notification.info({
         //     message: 'Info',
         //     description: response.data.message,
-        //     placement: 'topRight',
+        //     placement: 'topRight' // You can adjust the placement as needed
         // });
       }
+      // Handle success response from the API
     } catch (error) {
       console.error("API error:", error);
       notification.info({
         message: "Info",
         description: error.response?.data?.message,
-        placement: "topRight",
+        placement: "topRight", // You can adjust the placement as needed
       });
+      // Handle error response from the API
     } finally {
       setLoading(false);
     }
   }
 
-  const handlePageChange = (page, pageSize) => {
-    setCurrentPage(page);
-    setPageSize(pageSize);
-  };
-
-  const handleOk = () => {
-    setModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setModalVisible(false);
-  };
-
   async function handleDelete(id) {
     try {
-      const response = await axios.delete(`${baseUrl}/api/plan/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
-        },
-      });
-      if (response.data.success) {
+      const response = await axios.delete(
+        `${backendUrl}/api/religiousbelief/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
+          },
+        }
+      );
+      if (response.status === 200) {
         getUserList();
         notification.success({
           message: "Success",
-          description: "Plan deleted successfully!",
+          description: "Faq deleted successfully!",
           placement: "topRight",
         });
       } else {
@@ -139,6 +139,19 @@ function PlanList() {
     });
   };
 
+  const showModal = (privacy) => {
+    setPrivacy(privacy);
+    setModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+
   return (
     <>
       <Loader visible={loading} />
@@ -148,30 +161,28 @@ function PlanList() {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Plan"
+              title="Religious Beliefs"
               extra={
                 <>
-                  {/* <Link className="custom-btn" to="/plan/add">Add</Link> */}
+                  <Link className="custom-btn" to="/religious-beliefs/add">
+                    Add
+                  </Link>
                 </>
               }
             >
               <div className="table-responsive">
                 <Table
                   columns={columns}
-                  dataSource={userList.map((user, index) => ({
+                  dataSource={religiousList.map((user, index) => ({
                     key: index.toString(),
                     name: (
                       <div className="author-info">
                         <p>{user.name}</p>
                       </div>
                     ),
-                    description: (
-                      <div className="author-info">
-                        <p>{user.description}</p>
-                      </div>
-                    ),
                     status: (
                       <span
+                        type="primary"
                         className={
                           user.enabled ? "text-success" : "text-danger"
                         }
@@ -182,24 +193,21 @@ function PlanList() {
                     action: (
                       <div className="button-container">
                         <Link
-                          to={`/plan/update/${user._id}`}
+                          to={`/religious-beliefs/update/${user._id}`}
                           className="update-btn"
                         >
                           <EditOutlined />
                         </Link>
-                        {/* <button onClick={() => showDeleteConfirm(user._id)} className="delete-btn">
-                                                    <DeleteOutlined />
-                                                </button> */}
+                        <button
+                          onClick={() => showDeleteConfirm(user._id)}
+                          className="delete-btn"
+                        >
+                          <DeleteOutlined />
+                        </button>
                       </div>
                     ),
                   }))}
-                  pagination={{
-                    // Step 3: Add pagination settings
-                    current: currentPage,
-                    pageSize: pageSize,
-                    total: totalUsers,
-                    onChange: handlePageChange,
-                  }}
+                  pagination={false}
                   className="ant-border-space"
                 />
               </div>
@@ -208,7 +216,7 @@ function PlanList() {
         </Row>
       </div>
       <Modal
-        title={`Description Policy`}
+        title={`Answer`}
         visible={modalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -221,4 +229,4 @@ function PlanList() {
   );
 }
 
-export default PlanList;
+export default ReligiousBeliefs;
