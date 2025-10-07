@@ -12,7 +12,7 @@ import {
 } from "antd";
 import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
-import { baseUrl } from "../../config";
+import { backendUrl } from "../../config";
 import ReactQuill from "react-quill";
 
 const { Title } = Typography;
@@ -20,26 +20,25 @@ const { Item } = Form;
 const { Option } = Select;
 
 function LanguageSpeak() {
-  const { faqId } = useParams(); // Extract faqId from URL
+  const { languageSpeakId } = useParams();
   const history = useHistory();
   const [form] = Form.useForm();
   const [isUpdateMode, setIsUpdateMode] = useState(false);
-  const [universityData, setUniversityData] = useState(null);
   const [answerError, setAnswerError] = useState(false);
 
   useEffect(() => {
-    // Check if faqId exists to determine if it's an update mode
-    if (faqId) {
+    if (languageSpeakId) {
       setIsUpdateMode(true);
       fetchUniversityDetails();
     }
-  }, [faqId]);
+  }, [languageSpeakId]);
 
   const fetchUniversityDetails = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/faq/read/${faqId}`);
+      const response = await axios.get(
+        `${backendUrl}/api/language/read/${languageSpeakId}`
+      );
       if (response.status === 200) {
-        setUniversityData(response.data.result);
         form.setFieldsValue(response.data.result); // Populate form fields with fetched data
       } else {
         notification.info({
@@ -62,7 +61,7 @@ function LanguageSpeak() {
     try {
       if (isUpdateMode) {
         const response = await axios.patch(
-          `${baseUrl}/api/faq/update/${faqId}`,
+          `${backendUrl}/api/language/update/${languageSpeakId}`,
           values,
           {
             headers: {
@@ -73,10 +72,10 @@ function LanguageSpeak() {
         if (response.status === 200) {
           notification.success({
             message: "Success",
-            description: "Faq updated successfully!",
+            description: "language updated successfully!",
             placement: "topRight",
           });
-          history.push("/faq");
+          history.push("/language-speak");
         } else {
           notification.info({
             message: "Info",
@@ -85,19 +84,23 @@ function LanguageSpeak() {
           });
         }
       } else {
-        const response = await axios.post(`${baseUrl}/api/faq/create`, values, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
-          },
-        });
+        const response = await axios.post(
+          `${backendUrl}/api/language/create`,
+          values,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
+            },
+          }
+        );
         if (response.status === 200) {
           notification.success({
             message: "Success",
-            description: "Faq added successfully!",
+            description: "language added successfully!",
             placement: "topRight",
           });
           form.resetFields();
-          history.push("/faq");
+          history.push("/language-speak");
         } else {
           notification.info({
             message: "Info",
@@ -117,8 +120,6 @@ function LanguageSpeak() {
   };
 
   const onFinishFailed = ({ errorFields }) => {
-    console.log("errorFields", errorFields);
-
     const hasAnswerError = errorFields.some(
       (field) => field.name[0] === "answer"
     );
@@ -144,7 +145,11 @@ function LanguageSpeak() {
                   alignItems: "center",
                 }}
               >
-                <span>{isUpdateMode ? "Update Faq" : "Add Faq"}</span>
+                <span>
+                  {isUpdateMode
+                    ? "Update Language Speak"
+                    : "Add Language Speak"}
+                </span>
                 <Button type="primary" onClick={() => history.goBack()}>
                   Back
                 </Button>
@@ -161,8 +166,8 @@ function LanguageSpeak() {
               <Row gutter={[16, 16]}>
                 <Col xs={24} sm={12} lg={12}>
                   <Item
-                    label="Question"
-                    name="question"
+                    label="Language Name"
+                    name="name"
                     rules={[
                       { required: true, message: "Please enter question" },
                     ]}
@@ -170,36 +175,7 @@ function LanguageSpeak() {
                     <Input />
                   </Item>
                 </Col>
-                <Col xs={24} sm={12} lg={12}>
-                  <Item
-                    label="Answer"
-                    name="answer"
-                    rules={[{ required: true, message: "Please enter answer" }]}
-                  >
-                    <ReactQuill
-                      style={{
-                        border: answerError
-                          ? "1px solid red"
-                          : "1px solid #d9d9d9",
-                        borderRadius: 6,
-                        // padding: 2
-                      }}
-                    />
-                  </Item>
-                </Col>
-                {/* <Col xs={24} sm={12} lg={12}>
-                                    <Item
-                                        label="Category"
-                                        name="category"
-                                        rules={[{ required: true, message: 'Please select category' }]}
-                                    >
-                                        <Select placeholder="Please select category">
-                                            <Option value="Profile">Profile</Option>
-                                            <Option value="Safety">Safety</Option>
-                                            <Option value="Data">Data</Option>
-                                        </Select>
-                                    </Item>
-                                </Col> */}
+
                 <Col xs={24} sm={12} lg={12}>
                   <Item
                     label="Status"

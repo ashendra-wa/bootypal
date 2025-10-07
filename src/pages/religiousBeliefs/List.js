@@ -19,7 +19,7 @@ import {
   ExclamationCircleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import { baseUrl } from "../../config";
+import { baseUrl, backendUrl } from "../../config";
 import Loader from "../../components/Loader";
 
 const { Title } = Typography;
@@ -34,24 +34,19 @@ const columns = [
     width: "32%",
   },
   {
-    title: "Enabled",
-    dataIndex: "enabled",
-    key: "enabled",
+    title: "Status",
+    key: "status",
+    dataIndex: "status",
   },
-  // {
-  //     title: "Category",
-  //     key: "category",
-  //     dataIndex: "category",
-  // },
   {
-    title: "Icons",
-    key: "icons",
-    dataIndex: "icons",
+    title: "Action",
+    key: "action",
+    dataIndex: "action",
   },
 ];
 
 function ReligiousBeliefs() {
-  const [LookingForList, setLookingForList] = useState([]);
+  const [religiousList, setReligiousList] = useState([]);
   const [privacy, setPrivacy] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -64,13 +59,16 @@ function ReligiousBeliefs() {
     try {
       setLoading(true);
       // Make API call to submit form data
-      const response = await axios.get(`${baseUrl}/api/faq/listAll`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
-        },
-      });
+      const response = await axios.get(
+        `${backendUrl}/api/religiousbelief/listAll`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
+          },
+        }
+      );
       if (response.status === 200) {
-        setLookingForList(response.data.result);
+        setReligiousList(response.data.result);
         console.log("response", response.data.result);
       } else {
         // notification.info({
@@ -95,11 +93,14 @@ function ReligiousBeliefs() {
 
   async function handleDelete(id) {
     try {
-      const response = await axios.delete(`${baseUrl}/api/faq/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
-        },
-      });
+      const response = await axios.delete(
+        `${backendUrl}/api/religiousbelief/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
+          },
+        }
+      );
       if (response.status === 200) {
         getUserList();
         notification.success({
@@ -160,10 +161,10 @@ function ReligiousBeliefs() {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Looking For"
+              title="Religious Beliefs"
               extra={
                 <>
-                  <Link className="custom-btn" to="/faq/add">
+                  <Link className="custom-btn" to="/religious-beliefs/add">
                     Add
                   </Link>
                 </>
@@ -172,20 +173,12 @@ function ReligiousBeliefs() {
               <div className="table-responsive">
                 <Table
                   columns={columns}
-                  dataSource={LookingForList.map((user, index) => ({
+                  dataSource={religiousList.map((user, index) => ({
                     key: index.toString(),
                     name: (
                       <div className="author-info">
-                        <p>{user.question}</p>
+                        <p>{user.name}</p>
                       </div>
-                    ),
-                    description: (
-                      <Button
-                        type="primary"
-                        onClick={() => showModal(user.answer, "Description")}
-                      >
-                        <EyeOutlined />
-                      </Button>
                     ),
                     status: (
                       <span
@@ -197,15 +190,10 @@ function ReligiousBeliefs() {
                         {user.enabled ? "Active" : "Inactive"}
                       </span>
                     ),
-                    // category: (
-                    //     <span type="primary">
-                    //         {user.category}
-                    //     </span>
-                    // ),
                     action: (
                       <div className="button-container">
                         <Link
-                          to={`/faq/update/${user._id}`}
+                          to={`/religious-beliefs/update/${user._id}`}
                           className="update-btn"
                         >
                           <EditOutlined />

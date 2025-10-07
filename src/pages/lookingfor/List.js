@@ -13,13 +13,13 @@ import {
   Modal,
 } from "antd";
 import axios from "axios";
-import {
+import Icon, {
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import { baseUrl } from "../../config";
+import { baseUrl, backendUrl } from "../../config";
 import Loader from "../../components/Loader";
 
 const { Title } = Typography;
@@ -34,19 +34,19 @@ const columns = [
     width: "32%",
   },
   {
-    title: "Enabled",
-    dataIndex: "enabled",
-    key: "enabled",
+    title: "Status",
+    key: "status",
+    dataIndex: "status",
   },
-  // {
-  //     title: "Category",
-  //     key: "category",
-  //     dataIndex: "category",
-  // },
   {
     title: "Icons",
     key: "icons",
     dataIndex: "icons",
+  },
+  {
+    title: "Action",
+    key: "action",
+    dataIndex: "action",
   },
 ];
 
@@ -58,26 +58,22 @@ function LookingForList() {
 
   useEffect(() => {
     getUserList();
-  }, []);
+  }, [backendUrl]);
 
   async function getUserList() {
     try {
       setLoading(true);
       // Make API call to submit form data
-      const response = await axios.get(`${baseUrl}/api/faq/listAll`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
-        },
-      });
+      const response = await axios.get(
+        `${backendUrl}/api/lookingfor/listAll?enabled=true`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
       if (response.status === 200) {
         setLookingForList(response.data.result);
-        console.log("response", response.data.result);
-      } else {
-        // notification.info({
-        //     message: 'Info',
-        //     description: response.data.message,
-        //     placement: 'topRight' // You can adjust the placement as needed
-        // });
       }
       // Handle success response from the API
     } catch (error) {
@@ -87,7 +83,6 @@ function LookingForList() {
         description: error.response?.data?.message,
         placement: "topRight", // You can adjust the placement as needed
       });
-      // Handle error response from the API
     } finally {
       setLoading(false);
     }
@@ -95,11 +90,14 @@ function LookingForList() {
 
   async function handleDelete(id) {
     try {
-      const response = await axios.delete(`${baseUrl}/api/faq/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
-        },
-      });
+      const response = await axios.delete(
+        `${backendUrl}/api/lookingfor/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
+          },
+        }
+      );
       if (response.status === 200) {
         getUserList();
         notification.success({
@@ -150,6 +148,10 @@ function LookingForList() {
   const handleCancel = () => {
     setModalVisible(false);
   };
+  console.log(
+    "======>LookingForListLookingForListLookingForList",
+    LookingForList
+  );
 
   return (
     <>
@@ -163,7 +165,7 @@ function LookingForList() {
               title="Looking For"
               extra={
                 <>
-                  <Link className="custom-btn" to="/faq/add">
+                  <Link className="custom-btn" to="/looking-for/Add">
                     Add
                   </Link>
                 </>
@@ -172,20 +174,12 @@ function LookingForList() {
               <div className="table-responsive">
                 <Table
                   columns={columns}
-                  dataSource={LookingForList.map((user, index) => ({
+                  dataSource={LookingForList?.map((user, index) => ({
                     key: index.toString(),
                     name: (
                       <div className="author-info">
-                        <p>{user.question}</p>
+                        <p>{user?.name ?? ""}</p>
                       </div>
-                    ),
-                    description: (
-                      <Button
-                        type="primary"
-                        onClick={() => showModal(user.answer, "Description")}
-                      >
-                        <EyeOutlined />
-                      </Button>
                     ),
                     status: (
                       <span
@@ -197,15 +191,25 @@ function LookingForList() {
                         {user.enabled ? "Active" : "Inactive"}
                       </span>
                     ),
-                    // category: (
-                    //     <span type="primary">
-                    //         {user.category}
-                    //     </span>
-                    // ),
+                    icons: (
+                      <span type="primary">
+                        <img
+                          src={`${backendUrl}/${user.icon}`}
+                          alt={user.name}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 8,
+                            objectFit: "cover",
+                          }}
+                        />
+                      </span>
+                    ),
+
                     action: (
                       <div className="button-container">
                         <Link
-                          to={`/faq/update/${user._id}`}
+                          to={`/looking-for/update/${user._id}`}
                           className="update-btn"
                         >
                           <EditOutlined />
@@ -227,16 +231,6 @@ function LookingForList() {
           </Col>
         </Row>
       </div>
-      <Modal
-        title={`Answer`}
-        visible={modalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <div className="author-info">
-          <div dangerouslySetInnerHTML={{ __html: privacy }} />
-        </div>
-      </Modal>
     </>
   );
 }

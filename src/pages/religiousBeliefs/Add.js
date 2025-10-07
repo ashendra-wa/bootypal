@@ -12,7 +12,7 @@ import {
 } from "antd";
 import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
-import { baseUrl } from "../../config";
+import { backendUrl } from "../../config";
 import ReactQuill from "react-quill";
 
 const { Title } = Typography;
@@ -20,7 +20,7 @@ const { Item } = Form;
 const { Option } = Select;
 
 function ReligiousBeliefs() {
-  const { faqId } = useParams(); // Extract faqId from URL
+  const { ReligiousBeliefsId } = useParams(); // Extract ReligiousBeliefsId from URL
   const history = useHistory();
   const [form] = Form.useForm();
   const [isUpdateMode, setIsUpdateMode] = useState(false);
@@ -28,16 +28,18 @@ function ReligiousBeliefs() {
   const [answerError, setAnswerError] = useState(false);
 
   useEffect(() => {
-    // Check if faqId exists to determine if it's an update mode
-    if (faqId) {
+    // Check if ReligiousBeliefsId exists to determine if it's an update mode
+    if (ReligiousBeliefsId) {
       setIsUpdateMode(true);
       fetchUniversityDetails();
     }
-  }, [faqId]);
+  }, [ReligiousBeliefsId]);
 
   const fetchUniversityDetails = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/faq/read/${faqId}`);
+      const response = await axios.get(
+        `${backendUrl}/api/religiousbelief/read/${ReligiousBeliefsId}`
+      );
       if (response.status === 200) {
         setUniversityData(response.data.result);
         form.setFieldsValue(response.data.result); // Populate form fields with fetched data
@@ -62,7 +64,7 @@ function ReligiousBeliefs() {
     try {
       if (isUpdateMode) {
         const response = await axios.patch(
-          `${baseUrl}/api/faq/update/${faqId}`,
+          `${backendUrl}/api/religiousbelief/update/${ReligiousBeliefsId}`,
           values,
           {
             headers: {
@@ -85,11 +87,15 @@ function ReligiousBeliefs() {
           });
         }
       } else {
-        const response = await axios.post(`${baseUrl}/api/faq/create`, values, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
-          },
-        });
+        const response = await axios.post(
+          `${backendUrl}/api/religiousbelief/create`,
+          values,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
+            },
+          }
+        );
         if (response.status === 200) {
           notification.success({
             message: "Success",
@@ -144,7 +150,11 @@ function ReligiousBeliefs() {
                   alignItems: "center",
                 }}
               >
-                <span>{isUpdateMode ? "Update Faq" : "Add Faq"}</span>
+                <span>
+                  {isUpdateMode
+                    ? "Update Religious Beliefs "
+                    : "Add Religious Beliefs"}
+                </span>
                 <Button type="primary" onClick={() => history.goBack()}>
                   Back
                 </Button>
@@ -161,45 +171,19 @@ function ReligiousBeliefs() {
               <Row gutter={[16, 16]}>
                 <Col xs={24} sm={12} lg={12}>
                   <Item
-                    label="Question"
-                    name="question"
+                    label="Religious Name"
+                    name="name"
                     rules={[
-                      { required: true, message: "Please enter question" },
+                      {
+                        required: true,
+                        message: "Please Enter Religious Name",
+                      },
                     ]}
                   >
                     <Input />
                   </Item>
                 </Col>
-                <Col xs={24} sm={12} lg={12}>
-                  <Item
-                    label="Answer"
-                    name="answer"
-                    rules={[{ required: true, message: "Please enter answer" }]}
-                  >
-                    <ReactQuill
-                      style={{
-                        border: answerError
-                          ? "1px solid red"
-                          : "1px solid #d9d9d9",
-                        borderRadius: 6,
-                        // padding: 2
-                      }}
-                    />
-                  </Item>
-                </Col>
-                {/* <Col xs={24} sm={12} lg={12}>
-                                    <Item
-                                        label="Category"
-                                        name="category"
-                                        rules={[{ required: true, message: 'Please select category' }]}
-                                    >
-                                        <Select placeholder="Please select category">
-                                            <Option value="Profile">Profile</Option>
-                                            <Option value="Safety">Safety</Option>
-                                            <Option value="Data">Data</Option>
-                                        </Select>
-                                    </Item>
-                                </Col> */}
+
                 <Col xs={24} sm={12} lg={12}>
                   <Item
                     label="Status"

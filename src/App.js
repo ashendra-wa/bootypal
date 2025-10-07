@@ -54,6 +54,10 @@ import EventCategoryForm from "./pages/eventCategory/Form";
 import LookingFor from "./pages/lookingfor/List";
 import LanguageSpeak from "./pages/languageSpeak/List";
 import ReligiousBeliefs from "./pages/religiousBeliefs/List";
+import LookingForForm from "./pages/lookingfor/Add";
+import ReligiousBeliefsForm from "./pages/religiousBeliefs/Add";
+
+import languageSpeakForm from "./pages/languageSpeak/Add";
 function App() {
   return (
     <div className="App">
@@ -66,7 +70,6 @@ function App() {
           <Route exact path="/dashboard" component={Home} />
           <Route exact path="/tables" component={Tables} />
           <Route exact path="/users" component={Users} />
-
           <Route exact path="/university" component={UniversityList} />
           <Route exact path="/university/add" component={UniversityAdd} />
           <Route
@@ -180,7 +183,32 @@ function App() {
           <Route exact path="/looking-for" component={LookingFor} />
           <Route exact path="/religious-beliefs" component={ReligiousBeliefs} />
           <Route exact path="/language-speak" component={LanguageSpeak} />
-
+          <Route exact path="/looking-for/Add" component={LookingForForm} />
+          <Route
+            exact
+            path="/looking-for/update/:LookingForId"
+            component={LookingForForm}
+          />
+          <Route
+            exact
+            path="/religious-beliefs/update/:ReligiousBeliefsId"
+            component={ReligiousBeliefsForm}
+          />
+          <Route
+            exact
+            path="/religious-beliefs/add"
+            component={ReligiousBeliefsForm}
+          />
+          <Route
+            exact
+            path="/language-speak/add"
+            component={languageSpeakForm}
+          />
+          <Route
+            exact
+            path="/language-speak/update/:languageSpeakId"
+            component={languageSpeakForm}
+          />
           {/* <Redirect from="*" to="/dashboard" /> */}
         </Main>
       </Switch>

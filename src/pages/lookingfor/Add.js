@@ -9,38 +9,51 @@ import {
   Form,
   Input,
   Select,
+  Upload,
 } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
-import { baseUrl } from "../../config";
-import ReactQuill from "react-quill";
+import { backendUrl } from "../../config";
 
 const { Title } = Typography;
 const { Item } = Form;
 const { Option } = Select;
 
 function LookingFor() {
-  const { faqId } = useParams(); // Extract faqId from URL
+  const { LookingForId } = useParams(); // Using same param name for consistency
   const history = useHistory();
   const [form] = Form.useForm();
   const [isUpdateMode, setIsUpdateMode] = useState(false);
-  const [universityData, setUniversityData] = useState(null);
-  const [answerError, setAnswerError] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
-    // Check if faqId exists to determine if it's an update mode
-    if (faqId) {
+    if (LookingForId) {
       setIsUpdateMode(true);
-      fetchUniversityDetails();
+      fetchDetails();
     }
-  }, [faqId]);
+  }, [LookingForId]);
 
-  const fetchUniversityDetails = async () => {
+  const fetchDetails = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/faq/read/${faqId}`);
+      const response = await axios.get(
+        `${backendUrl}/api/lookingfor/read/${LookingForId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
       if (response.status === 200) {
-        setUniversityData(response.data.result);
-        form.setFieldsValue(response.data.result); // Populate form fields with fetched data
+        const data = response.data.result;
+        form.setFieldsValue({
+          name: data.name,
+          enabled: data.enabled,
+        });
+        console.log("===>", data);
+        setPreviewImage(`${backendUrl}/${data.icon}`);
+        setImageFile(`${backendUrl}/${data.icon}`);
       } else {
         notification.info({
           message: "Info",
@@ -59,52 +72,55 @@ function LookingFor() {
   };
 
   const onFinish = async (values) => {
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("enabled", values.enabled);
+    if (imageFile) formData.append("icon", imageFile);
     try {
+      let response;
       if (isUpdateMode) {
-        const response = await axios.patch(
-          `${baseUrl}/api/faq/update/${faqId}`,
-          values,
+        console.log("xfdgdfgdfgdfg is ytheee");
+        response = await axios.patch(
+          `${backendUrl}/api/lookingfor/update/${LookingForId}`,
+          formData,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              "Content-Type": "multipart/form-data",
             },
           }
         );
-        if (response.status === 200) {
-          notification.success({
-            message: "Success",
-            description: "Faq updated successfully!",
-            placement: "topRight",
-          });
-          history.push("/faq");
-        } else {
-          notification.info({
-            message: "Info",
-            description: response.data.message,
-            placement: "topRight",
-          });
-        }
       } else {
-        const response = await axios.post(`${baseUrl}/api/faq/create`, values, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
-          },
+        response = await axios.post(
+          `${backendUrl}/api/lookingfor/create-with-icon`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      }
+
+      if (response.status === 200) {
+        notification.success({
+          message: "Success",
+          description: isUpdateMode
+            ? "Looking For updated successfully!"
+            : "Looking For added successfully!",
+          placement: "topRight",
         });
-        if (response.status === 200) {
-          notification.success({
-            message: "Success",
-            description: "Faq added successfully!",
-            placement: "topRight",
-          });
-          form.resetFields();
-          history.push("/faq");
-        } else {
-          notification.info({
-            message: "Info",
-            description: response.data.message,
-            placement: "topRight",
-          });
-        }
+        form.resetFields();
+        setImageFile(null);
+        setPreviewImage(null);
+        history.push("/looking-for");
+      } else {
+        notification.info({
+          message: "Info",
+          description: response.data.message,
+          placement: "topRight",
+        });
       }
     } catch (error) {
       console.error("API error:", error);
@@ -116,17 +132,11 @@ function LookingFor() {
     }
   };
 
-  const onFinishFailed = ({ errorFields }) => {
-    console.log("errorFields", errorFields);
-
-    const hasAnswerError = errorFields.some(
-      (field) => field.name[0] === "answer"
-    );
-    if (hasAnswerError) {
-      setAnswerError(hasAnswerError);
-    } else {
-      setAnswerError(false);
-    }
+  const handleImageChange = (info) => {
+    console.log("===infoinfoinfo>", info);
+    const file = info.file;
+    setImageFile(file);
+    setPreviewImage(URL.createObjectURL(file));
   };
 
   return (
@@ -144,7 +154,9 @@ function LookingFor() {
                   alignItems: "center",
                 }}
               >
-                <span>{isUpdateMode ? "Update Faq" : "Add Faq"}</span>
+                <span>
+                  {isUpdateMode ? "Update Looking For" : "Add Looking For"}
+                </span>
                 <Button type="primary" onClick={() => history.goBack()}>
                   Back
                 </Button>
@@ -155,51 +167,50 @@ function LookingFor() {
               style={{ padding: "20px" }}
               form={form}
               onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
               layout="vertical"
             >
               <Row gutter={[16, 16]}>
                 <Col xs={24} sm={12} lg={12}>
                   <Item
-                    label="Question"
-                    name="question"
-                    rules={[
-                      { required: true, message: "Please enter question" },
-                    ]}
+                    label="Name"
+                    name="name"
+                    rules={[{ required: true, message: "Please enter name" }]}
                   >
-                    <Input />
+                    <Input placeholder="Enter name" />
                   </Item>
                 </Col>
+
                 <Col xs={24} sm={12} lg={12}>
                   <Item
-                    label="Answer"
-                    name="answer"
-                    rules={[{ required: true, message: "Please enter answer" }]}
+                    label="Icon (Image)"
+                    name="icon"
+                    rules={[
+                      {
+                        required: !imageFile || !previewImage,
+                        message: "Please upload an image",
+                      },
+                    ]}
                   >
-                    <ReactQuill
-                      style={{
-                        border: answerError
-                          ? "1px solid red"
-                          : "1px solid #d9d9d9",
-                        borderRadius: 6,
-                        // padding: 2
-                      }}
-                    />
+                    <Upload
+                      listType="picture"
+                      showUploadList={false}
+                      beforeUpload={() => false} // prevent auto upload
+                      onChange={handleImageChange}
+                    >
+                      <Button icon={<UploadOutlined />}>Upload Image</Button>
+                    </Upload>
+                    {previewImage && (
+                      <div style={{ marginTop: 10 }}>
+                        <img
+                          src={previewImage}
+                          alt="Preview"
+                          style={{ width: 100, height: 100, borderRadius: 8 }}
+                        />
+                      </div>
+                    )}
                   </Item>
                 </Col>
-                {/* <Col xs={24} sm={12} lg={12}>
-                                    <Item
-                                        label="Category"
-                                        name="category"
-                                        rules={[{ required: true, message: 'Please select category' }]}
-                                    >
-                                        <Select placeholder="Please select category">
-                                            <Option value="Profile">Profile</Option>
-                                            <Option value="Safety">Safety</Option>
-                                            <Option value="Data">Data</Option>
-                                        </Select>
-                                    </Item>
-                                </Col> */}
+
                 <Col xs={24} sm={12} lg={12}>
                   <Item
                     label="Status"
@@ -215,6 +226,7 @@ function LookingFor() {
                   </Item>
                 </Col>
               </Row>
+
               <Row>
                 <Col xs={24} sm={12} lg={8}>
                   <Item>

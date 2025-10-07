@@ -19,7 +19,7 @@ import {
   ExclamationCircleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import { baseUrl } from "../../config";
+import { backendUrl } from "../../config";
 import Loader from "../../components/Loader";
 
 const { Title } = Typography;
@@ -34,19 +34,14 @@ const columns = [
     width: "32%",
   },
   {
-    title: "Enabled",
-    dataIndex: "enabled",
-    key: "enabled",
+    title: "Status",
+    key: "status",
+    dataIndex: "status",
   },
-  // {
-  //     title: "Category",
-  //     key: "category",
-  //     dataIndex: "category",
-  // },
   {
-    title: "Icons",
-    key: "icons",
-    dataIndex: "icons",
+    title: "Action",
+    key: "action",
+    dataIndex: "action",
   },
 ];
 
@@ -64,7 +59,7 @@ function LanguageSpeak() {
     try {
       setLoading(true);
       // Make API call to submit form data
-      const response = await axios.get(`${baseUrl}/api/faq/listAll`, {
+      const response = await axios.get(`${backendUrl}/api/language/listAll`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
         },
@@ -72,12 +67,6 @@ function LanguageSpeak() {
       if (response.status === 200) {
         setLanguageSpeak(response.data.result);
         console.log("response", response.data.result);
-      } else {
-        // notification.info({
-        //     message: 'Info',
-        //     description: response.data.message,
-        //     placement: 'topRight' // You can adjust the placement as needed
-        // });
       }
       // Handle success response from the API
     } catch (error) {
@@ -95,16 +84,19 @@ function LanguageSpeak() {
 
   async function handleDelete(id) {
     try {
-      const response = await axios.delete(`${baseUrl}/api/faq/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
-        },
-      });
+      const response = await axios.delete(
+        `${backendUrl}/api/language/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in headers
+          },
+        }
+      );
       if (response.status === 200) {
         getUserList();
         notification.success({
           message: "Success",
-          description: "Faq deleted successfully!",
+          description: "language deleted successfully!",
           placement: "topRight",
         });
       } else {
@@ -160,10 +152,10 @@ function LanguageSpeak() {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Looking For"
+              title="Language Speak"
               extra={
                 <>
-                  <Link className="custom-btn" to="/faq/add">
+                  <Link className="custom-btn" to="/language-speak/add">
                     Add
                   </Link>
                 </>
@@ -176,16 +168,8 @@ function LanguageSpeak() {
                     key: index.toString(),
                     name: (
                       <div className="author-info">
-                        <p>{user.question}</p>
+                        <p>{user.name}</p>
                       </div>
-                    ),
-                    description: (
-                      <Button
-                        type="primary"
-                        onClick={() => showModal(user.answer, "Description")}
-                      >
-                        <EyeOutlined />
-                      </Button>
                     ),
                     status: (
                       <span
@@ -197,15 +181,11 @@ function LanguageSpeak() {
                         {user.enabled ? "Active" : "Inactive"}
                       </span>
                     ),
-                    // category: (
-                    //     <span type="primary">
-                    //         {user.category}
-                    //     </span>
-                    // ),
+
                     action: (
                       <div className="button-container">
                         <Link
-                          to={`/faq/update/${user._id}`}
+                          to={`/language-speak/update/${user._id}`}
                           className="update-btn"
                         >
                           <EditOutlined />
@@ -227,16 +207,6 @@ function LanguageSpeak() {
           </Col>
         </Row>
       </div>
-      <Modal
-        title={`Answer`}
-        visible={modalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <div className="author-info">
-          <div dangerouslySetInnerHTML={{ __html: privacy }} />
-        </div>
-      </Modal>
     </>
   );
 }
