@@ -51,8 +51,8 @@ function LookingFor() {
           name: data.name,
           enabled: data.enabled,
         });
-        setPreviewImage(`${backendUrl}/${data.icon}`);
-        setImageFile(`${backendUrl}/${data.icon}`);
+        setPreviewImage(data.icon ? `${backendUrl}/${data.icon}` : null);
+        setImageFile(data.icon ? `${backendUrl}/${data.icon}` : null);
       } else {
         notification.info({
           message: "Info",

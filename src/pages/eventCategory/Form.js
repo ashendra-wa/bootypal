@@ -40,7 +40,9 @@ function EventCategoryForm() {
       );
       if (response.data.success) {
         form.setFieldsValue(response.data.result);
-        const imgPath = `${baseUrl}/${response.data.result.icon}`;
+        const imgPath = response.data.result.icon
+          ? `${baseUrl}/${response.data.result.icon}`
+          : null;
         setPreviewImage(imgPath);
       } else {
         notification.info({
@@ -144,7 +146,7 @@ function EventCategoryForm() {
     setImage(file);
     setPreviewImage(URL.createObjectURL(file));
   };
-
+  console.log("previewImagepreviewImagepreviewImage", previewImage);
   return (
     <div className="tabled">
       <Row gutter={[24, 0]}>
@@ -207,7 +209,7 @@ function EventCategoryForm() {
                     >
                       <Button icon={<UploadOutlined />}>Upload Image</Button>
                     </Upload>
-                    {previewImage && (
+                    {previewImage && previewImage == "undefined" && (
                       <div style={{ marginTop: 10 }}>
                         <img
                           src={previewImage}
