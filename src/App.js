@@ -56,6 +56,7 @@ import LanguageSpeak from "./pages/languageSpeak/List";
 import ReligiousBeliefs from "./pages/religiousBeliefs/List";
 import LookingForForm from "./pages/lookingfor/Add";
 import ReligiousBeliefsForm from "./pages/religiousBeliefs/Add";
+import Webdetail from "./pages/webPage/webdetail";
 
 import languageSpeakForm from "./pages/languageSpeak/Add";
 function App() {
@@ -64,6 +65,7 @@ function App() {
       <Switch>
         <Route path="/sign-up" exact component={SignUp} />
         <Route path="/sign-in" exact component={SignIn} />
+        <Route path="/childsafetypolicy" exact component={Webdetail} />
         <Route path="/delete-account" exact component={DeleteAccount} />
         <Main>
           <Route exact path="/" component={Home} />
